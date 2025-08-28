@@ -171,6 +171,11 @@ public class KeyedVelocityTabList implements InternalTabList {
   }
 
   @Override
+  public TabListEntry buildEntry(GameProfile profile, @Nullable Component displayName, int latency, int gameMode, @Nullable ChatSession chatSession, boolean listed, int listOrder, boolean showHat, int level) {
+    return new KeyedVelocityTabListEntry(this, profile, displayName, latency, gameMode,chatSession == null ? null : chatSession.getIdentifiedKey(), level);
+  }
+
+  @Override
   public void processLegacy(LegacyPlayerListItemPacket packet) {
     // Packets are already forwarded on, so no need to do that here
     for (LegacyPlayerListItemPacket.Item item : packet.getItems()) {

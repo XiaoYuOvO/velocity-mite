@@ -100,6 +100,7 @@ public class HandshakeSessionHandler implements MinecraftSessionHandler {
         return true;
       }
       connection.setProtocolVersion(handshake.getProtocolVersion());
+      connection.setRawVersion(handshake.getRawVersion());
       connection.setAssociation(ic);
 
       switch (nextState) {

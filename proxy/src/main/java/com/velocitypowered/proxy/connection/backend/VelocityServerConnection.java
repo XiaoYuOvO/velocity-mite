@@ -171,6 +171,7 @@ public class VelocityServerConnection implements MinecraftConnectionAssociation,
     HandshakePacket handshake = new HandshakePacket();
     handshake.setIntent(HandshakeIntent.LOGIN);
     handshake.setProtocolVersion(protocolVersion);
+    handshake.setRawVersion(proxyPlayer.getConnection().getRawVersion());
     if (forwardingMode == PlayerInfoForwarding.LEGACY) {
       handshake.setServerAddress(createLegacyForwardingAddress());
     } else if (forwardingMode == PlayerInfoForwarding.BUNGEEGUARD) {

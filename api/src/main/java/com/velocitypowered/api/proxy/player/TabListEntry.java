@@ -181,6 +181,14 @@ public interface TabListEntry extends KeyIdentifiable {
     return this;
   }
 
+  default int getLevel() {
+    return 0;
+  }
+
+  default TabListEntry setLevel(int level) {
+    return this;
+  }
+
   /**
    * Returns a {@link Builder} to create a {@link TabListEntry}.
    *
@@ -205,6 +213,7 @@ public interface TabListEntry extends KeyIdentifiable {
     private boolean listed = true;
     private int listOrder = 0;
     private boolean showHat;
+    private int level;
 
     private @Nullable ChatSession chatSession;
 
@@ -320,6 +329,11 @@ public interface TabListEntry extends KeyIdentifiable {
      */
     public Builder showHat(boolean showHat) {
       this.showHat = showHat;
+      return this;
+    }
+
+    public Builder level(int level) {
+      this.level = level;
       return this;
     }
 

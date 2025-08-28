@@ -18,46 +18,7 @@
 package com.velocitypowered.proxy.connection;
 
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
-import com.velocitypowered.proxy.protocol.packet.AvailableCommandsPacket;
-import com.velocitypowered.proxy.protocol.packet.BossBarPacket;
-import com.velocitypowered.proxy.protocol.packet.BundleDelimiterPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientSettingsPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientboundCookieRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientboundStoreCookiePacket;
-import com.velocitypowered.proxy.protocol.packet.DialogClearPacket;
-import com.velocitypowered.proxy.protocol.packet.DialogShowPacket;
-import com.velocitypowered.proxy.protocol.packet.DisconnectPacket;
-import com.velocitypowered.proxy.protocol.packet.EncryptionRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.EncryptionResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.HandshakePacket;
-import com.velocitypowered.proxy.protocol.packet.HeaderAndFooterPacket;
-import com.velocitypowered.proxy.protocol.packet.JoinGamePacket;
-import com.velocitypowered.proxy.protocol.packet.KeepAlivePacket;
-import com.velocitypowered.proxy.protocol.packet.LegacyHandshakePacket;
-import com.velocitypowered.proxy.protocol.packet.LegacyPingPacket;
-import com.velocitypowered.proxy.protocol.packet.LegacyPlayerListItemPacket;
-import com.velocitypowered.proxy.protocol.packet.LoginAcknowledgedPacket;
-import com.velocitypowered.proxy.protocol.packet.LoginPluginMessagePacket;
-import com.velocitypowered.proxy.protocol.packet.LoginPluginResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.PingIdentifyPacket;
-import com.velocitypowered.proxy.protocol.packet.PluginMessagePacket;
-import com.velocitypowered.proxy.protocol.packet.RemovePlayerInfoPacket;
-import com.velocitypowered.proxy.protocol.packet.RemoveResourcePackPacket;
-import com.velocitypowered.proxy.protocol.packet.ResourcePackRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.ResourcePackResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.RespawnPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerDataPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerLoginPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerLoginSuccessPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerboundCookieResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.SetCompressionPacket;
-import com.velocitypowered.proxy.protocol.packet.StatusPingPacket;
-import com.velocitypowered.proxy.protocol.packet.StatusRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.StatusResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.TabCompleteRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.TabCompleteResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.TransferPacket;
-import com.velocitypowered.proxy.protocol.packet.UpsertPlayerInfoPacket;
+import com.velocitypowered.proxy.protocol.packet.*;
 import com.velocitypowered.proxy.protocol.packet.chat.ChatAcknowledgementPacket;
 import com.velocitypowered.proxy.protocol.packet.chat.PlayerChatCompletionPacket;
 import com.velocitypowered.proxy.protocol.packet.chat.SystemChatPacket;
@@ -374,4 +335,7 @@ public interface MinecraftSessionHandler {
   default boolean handle(DialogShowPacket packet) {
     return false;
   }
+
+  default boolean handle(LoginRequestModInfoPacket loginRequestModInfoPacket){return false;};
+  default boolean handle(LoginModInfoResponsePacket loginModInfoResponsePacket){return false;};
 }

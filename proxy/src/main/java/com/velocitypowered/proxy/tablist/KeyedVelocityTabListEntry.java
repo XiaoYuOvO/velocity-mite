@@ -38,16 +38,23 @@ public class KeyedVelocityTabListEntry implements TabListEntry {
   private int latency;
   private int gameMode;
   private @Nullable IdentifiedKey playerKey;
+  private int level;
 
   KeyedVelocityTabListEntry(KeyedVelocityTabList tabList, GameProfile profile,
+                            net.kyori.adventure.text.@Nullable Component displayName, int latency, int gameMode,
+                            @Nullable IdentifiedKey playerKey){
+    this(tabList, profile, displayName, latency, gameMode, playerKey,0);
+  }
+  KeyedVelocityTabListEntry(KeyedVelocityTabList tabList, GameProfile profile,
       net.kyori.adventure.text.@Nullable Component displayName, int latency, int gameMode,
-      @Nullable IdentifiedKey playerKey) {
+      @Nullable IdentifiedKey playerKey, int level) {
     this.tabList = tabList;
     this.profile = profile;
     this.displayName = displayName;
     this.latency = latency;
     this.gameMode = gameMode;
     this.playerKey = playerKey;
+    this.level = level;
   }
 
   @Override
@@ -120,5 +127,16 @@ public class KeyedVelocityTabListEntry implements TabListEntry {
 
   void setPlayerKeyInternal(IdentifiedKey playerKey) {
     this.playerKey = playerKey;
+  }
+
+  @Override
+  public int getLevel() {
+    return level;
+  }
+
+  @Override
+  public TabListEntry setLevel(int level) {
+    this.level = level;
+    return this;
   }
 }

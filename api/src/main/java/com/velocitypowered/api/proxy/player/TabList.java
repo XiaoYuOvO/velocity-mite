@@ -212,4 +212,8 @@ public interface TabList {
   @Deprecated
   TabListEntry buildEntry(GameProfile profile, @Nullable Component displayName, int latency,
                           int gameMode, @Nullable ChatSession chatSession, boolean listed, int listOrder, boolean showHat);
+
+  @Deprecated
+  TabListEntry buildEntry(GameProfile profile, @Nullable Component displayName, int latency,
+                          int gameMode, @Nullable ChatSession chatSession, boolean listed, int listOrder, boolean showHat, int level);
 }

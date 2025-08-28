@@ -54,6 +54,9 @@ public class JoinGamePacket implements MinecraftPacket {
   private int seaLevel; // 1.21.2+
   private boolean enforcesSecureChat; // 1.20.5+
 
+  private int autoRespawnTime;// MITE
+  private int itemUseCooldown;// MITE
+
   public int getEntityId() {
     return entityId;
   }
@@ -202,19 +205,42 @@ public class JoinGamePacket implements MinecraftPacket {
     return registry;
   }
 
+  public int getAutoRespawnTime() {
+    return autoRespawnTime;
+  }
+
+  public int getItemUseCooldown() {
+    return itemUseCooldown;
+  }
+
   @Override
   public String toString() {
-    return "JoinGame{" + "entityId=" + entityId + ", gamemode=" + gamemode + ", dimension=" +
-        dimension + ", partialHashedSeed=" + partialHashedSeed + ", difficulty=" + difficulty +
-        ", isHardcore=" + isHardcore + ", maxPlayers=" + maxPlayers + ", levelType='" + levelType +
-        '\'' + ", viewDistance=" + viewDistance + ", reducedDebugInfo=" + reducedDebugInfo +
-        ", showRespawnScreen=" + showRespawnScreen + ", doLimitedCrafting=" + doLimitedCrafting +
-        ", levelNames=" + levelNames + ", registry='" + registry + '\'' + ", dimensionInfo='" +
-        dimensionInfo + '\'' + ", currentDimensionData='" + currentDimensionData + '\'' +
-        ", previousGamemode=" + previousGamemode + ", simulationDistance=" + simulationDistance +
-        ", lastDeathPosition='" + lastDeathPosition + '\'' + ", portalCooldown=" + portalCooldown +
-        ", seaLevel=" + seaLevel +
-        '}';
+    return "JoinGamePacket{" +
+            "entityId=" + entityId +
+            ", gamemode=" + gamemode +
+            ", dimension=" + dimension +
+            ", partialHashedSeed=" + partialHashedSeed +
+            ", difficulty=" + difficulty +
+            ", isHardcore=" + isHardcore +
+            ", maxPlayers=" + maxPlayers +
+            ", levelType='" + levelType + '\'' +
+            ", viewDistance=" + viewDistance +
+            ", reducedDebugInfo=" + reducedDebugInfo +
+            ", showRespawnScreen=" + showRespawnScreen +
+            ", doLimitedCrafting=" + doLimitedCrafting +
+            ", levelNames=" + levelNames +
+            ", registry=" + registry +
+            ", dimensionInfo=" + dimensionInfo +
+            ", currentDimensionData=" + currentDimensionData +
+            ", previousGamemode=" + previousGamemode +
+            ", simulationDistance=" + simulationDistance +
+            ", lastDeathPosition=" + lastDeathPosition +
+            ", portalCooldown=" + portalCooldown +
+            ", seaLevel=" + seaLevel +
+            ", enforcesSecureChat=" + enforcesSecureChat +
+            ", autoRespawnTime=" + autoRespawnTime +
+            ", itemUseCooldown=" + itemUseCooldown +
+            '}';
   }
 
   @Override
@@ -312,6 +338,11 @@ public class JoinGamePacket implements MinecraftPacket {
 
     if (version.noLessThan(ProtocolVersion.MINECRAFT_1_20)) {
       this.portalCooldown = ProtocolUtils.readVarInt(buf);
+    }
+
+    if (version.isMITE()){
+      this.autoRespawnTime = ProtocolUtils.readVarInt(buf);
+      this.itemUseCooldown = ProtocolUtils.readVarInt(buf);
     }
   }
 
@@ -463,6 +494,11 @@ public class JoinGamePacket implements MinecraftPacket {
 
     if (version.noLessThan(ProtocolVersion.MINECRAFT_1_20)) {
       ProtocolUtils.writeVarInt(buf, portalCooldown);
+    }
+
+    if (version.isMITE()){
+      ProtocolUtils.writeVarInt(buf, autoRespawnTime);
+      ProtocolUtils.writeVarInt(buf, itemUseCooldown);
     }
   }
 

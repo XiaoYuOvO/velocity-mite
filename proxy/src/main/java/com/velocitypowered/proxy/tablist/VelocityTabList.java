@@ -233,6 +233,14 @@ public class VelocityTabList implements InternalTabList {
   }
 
   @Override
+  public TabListEntry buildEntry(GameProfile profile, @Nullable Component displayName, int latency,
+                                 int gameMode,
+                                 @Nullable ChatSession chatSession, boolean listed, int listOrder, boolean showHat, int level) {
+    return new VelocityTabListEntry(this, profile, displayName, latency, gameMode, chatSession,
+            listed, listOrder, showHat, level);
+  }
+
+  @Override
   public void processUpdate(UpsertPlayerInfoPacket infoPacket) {
     for (UpsertPlayerInfoPacket.Entry entry : infoPacket.getEntries()) {
       processUpsert(infoPacket.getActions(), entry);

@@ -103,14 +103,7 @@ import com.velocitypowered.proxy.util.collect.CappedSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.net.InetSocketAddress;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ThreadLocalRandom;
@@ -179,6 +172,7 @@ public class ConnectedPlayer implements MinecraftConnectionAssociation, Player, 
   private @Nullable VelocityServerConnection connectionInFlight;
   private @Nullable PlayerSettings settings;
   private @Nullable ModInfo modInfo;
+  private @Nullable Map<String, List<String>> miteModInfo;
   private final Set<VelocityBossBarImplementation> bossBars = new HashSet<>();
   private Component playerListHeader = Component.empty();
   private Component playerListFooter = Component.empty();
@@ -361,6 +355,16 @@ public class ConnectedPlayer implements MinecraftConnectionAssociation, Player, 
   public void setModInfo(ModInfo modInfo) {
     this.modInfo = modInfo;
     server.getEventManager().fireAndForget(new PlayerModInfoEvent(this, modInfo));
+  }
+
+  public Optional<Map<String, List<String>>> getMiteModInfo() {
+    return Optional.ofNullable(miteModInfo);
+  }
+
+  public void setMITEModInfo(Map<String, List<String>> modInfo) {
+    this.miteModInfo = modInfo;
+    //TODO Convert mod info
+//    server.getEventManager().fireAndForget(new PlayerModInfoEvent(this, modInfo));
   }
 
   @Override

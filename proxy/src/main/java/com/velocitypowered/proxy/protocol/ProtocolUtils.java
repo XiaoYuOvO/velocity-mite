@@ -37,7 +37,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.BinaryTag;
 import net.kyori.adventure.nbt.BinaryTagIO;
@@ -779,6 +784,27 @@ public enum ProtocolUtils {
     IdentifiedKey.Revision revision = version.noGreaterOrLessThan(ProtocolVersion.MINECRAFT_1_19)
         ? IdentifiedKey.Revision.GENERIC_V1 : IdentifiedKey.Revision.LINKED_V2;
     return new IdentifiedKeyImpl(revision, key, expiry, signature);
+  }
+
+  public static <K, V, M extends Map<K, V>> M readMap(ByteBuf buf, IntFunction<M> pMapFactory, Function<ByteBuf, K> pKeyParser, Function<ByteBuf, V> pValueParser) {
+    int i = readVarInt(buf);
+    M m = pMapFactory.apply(i);
+
+    for(int j = 0; j < i; ++j) {
+      K k = pKeyParser.apply(buf);
+      V v = pValueParser.apply(buf);
+      m.put(k, v);
+    }
+
+    return m;
+  }
+
+  public static <K, V> void writeMap(ByteBuf buf, Map<K, V> pMap, BiConsumer<ByteBuf, K> pKeySerializer, BiConsumer<ByteBuf, V> pValueSerializer) {
+    writeVarInt(buf, pMap.size());
+    pMap.forEach((pP_178362_, pP_178363_) -> {
+      pKeySerializer.accept(buf, pP_178362_);
+      pValueSerializer.accept(buf, pP_178363_);
+    });
   }
 
   /**

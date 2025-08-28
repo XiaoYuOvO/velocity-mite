@@ -79,6 +79,8 @@ public enum ProtocolVersion implements Ordered<ProtocolVersion> {
   MINECRAFT_1_17_1(756, "1.17.1"),
   MINECRAFT_1_18(757, "1.18", "1.18.1"),
   MINECRAFT_1_18_2(758, "1.18.2"),
+  MITE1_18_2_BASE(77730000, "1.18.2-MITE-base"),
+  MITE1_18_2_MAX(77739999, "1.18.2-MITE"),
   MINECRAFT_1_19(759, "1.19"),
   MINECRAFT_1_19_1(760, "1.19.1", "1.19.2"),
   MINECRAFT_1_19_3(761, "1.19.3"),
@@ -254,6 +256,7 @@ public enum ProtocolVersion implements Ordered<ProtocolVersion> {
    * @return the protocol version
    */
   public static ProtocolVersion getProtocolVersion(int protocol) {
+    if (protocol > MITE1_18_2_BASE.protocol) return MITE1_18_2_MAX;
     return ID_TO_PROTOCOL_CONSTANT.getOrDefault(protocol, UNKNOWN);
   }
 
@@ -278,5 +281,9 @@ public enum ProtocolVersion implements Ordered<ProtocolVersion> {
   @Override
   public String toString() {
     return getVersionIntroducedIn();
+  }
+
+  public boolean isMITE() {
+    return this.noLessThan(MITE1_18_2_BASE) && this.noGreaterOrLessThan(MITE1_18_2_MAX);
   }
 }

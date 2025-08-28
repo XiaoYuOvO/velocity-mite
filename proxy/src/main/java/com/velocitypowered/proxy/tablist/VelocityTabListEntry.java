@@ -42,13 +42,20 @@ public class VelocityTabListEntry implements TabListEntry {
   private int listOrder;
   private boolean showHat;
   private @Nullable ChatSession session;
+  private int level;
 
   /**
    * Constructs the instance.
    */
+
   public VelocityTabListEntry(VelocityTabList tabList, GameProfile profile, Component displayName,
                               int latency,
-                              int gameMode, @Nullable ChatSession session, boolean listed, int listOrder, boolean showHat) {
+                              int gameMode, @Nullable ChatSession session, boolean listed, int listOrder, boolean showHat){
+    this(tabList, profile, displayName, latency, gameMode, session, listed, listOrder, showHat, 0);
+  }
+  public VelocityTabListEntry(VelocityTabList tabList, GameProfile profile, Component displayName,
+                              int latency,
+                              int gameMode, @Nullable ChatSession session, boolean listed, int listOrder, boolean showHat, int level) {
     this.tabList = tabList;
     this.profile = profile;
     this.displayName = displayName;
@@ -58,6 +65,7 @@ public class VelocityTabListEntry implements TabListEntry {
     this.listed = listed;
     this.listOrder = listOrder;
     this.showHat = showHat;
+    this.level = level;
   }
 
   @Override
@@ -194,5 +202,16 @@ public class VelocityTabListEntry implements TabListEntry {
 
   void setShowHatWithoutUpdate(boolean showHat) {
     this.showHat = showHat;
+  }
+
+  @Override
+  public int getLevel() {
+    return level;
+  }
+
+  @Override
+  public TabListEntry setLevel(int level) {
+    this.level = level;
+    return this;
   }
 }

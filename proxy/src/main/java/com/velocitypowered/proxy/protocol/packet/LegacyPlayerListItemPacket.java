@@ -40,6 +40,8 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
   public static final int UPDATE_LATENCY = 2;
   public static final int UPDATE_DISPLAY_NAME = 3;
   public static final int REMOVE_PLAYER = 4;
+  //MITE
+  public static final int UPDATE_LEVEL = 5;
   private int action;
   private final List<Item> items = new ArrayList<>();
 
@@ -81,6 +83,9 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
                 item.setPlayerKey(ProtocolUtils.readPlayerKey(version, buf));
               }
             }
+            if (version.isMITE()){
+              item.setLevel(buf.readInt());
+            }
             break;
           case UPDATE_GAMEMODE:
             item.setGameMode(ProtocolUtils.readVarInt(buf));
@@ -93,6 +98,9 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
             break;
           case REMOVE_PLAYER:
             //Do nothing, all that is needed is the uuid
+            break;
+          case UPDATE_LEVEL:
+            item.setLevel(buf.readInt());
             break;
           default:
             throw new UnsupportedOperationException("Unknown action " + action);
@@ -140,6 +148,9 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
                 buf.writeBoolean(false);
               }
             }
+            if (version.isMITE()){
+              buf.writeInt(item.getLevel());
+            }
             break;
           case UPDATE_GAMEMODE:
             ProtocolUtils.writeVarInt(buf, item.getGameMode());
@@ -152,6 +163,10 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
             break;
           case REMOVE_PLAYER:
             // Do nothing, all that is needed is the uuid
+            break;
+          //MITE
+          case UPDATE_LEVEL:
+            buf.writeInt(item.getLevel());
             break;
           default:
             throw new UnsupportedOperationException("Unknown action " + action);
@@ -196,6 +211,7 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
     private int latency;
     private @Nullable Component displayName;
     private @Nullable IdentifiedKey playerKey;
+    private int level;
 
     public Item() {
       uuid = null;
@@ -212,7 +228,8 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
           .setLatency(entry.getLatency())
           .setGameMode(entry.getGameMode())
           .setPlayerKey(entry.getIdentifiedKey())
-          .setDisplayName(entry.getDisplayNameComponent().orElse(null));
+          .setDisplayName(entry.getDisplayNameComponent().orElse(null))
+              .setLevel(entry.getLevel());
     }
 
     public @Nullable UUID getUuid() {
@@ -225,6 +242,11 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
 
     public Item setName(String name) {
       this.name = name;
+      return this;
+    }
+
+    public Item setLevel(int level) {
+      this.level = level;
       return this;
     }
 
@@ -271,6 +293,10 @@ public class LegacyPlayerListItemPacket implements MinecraftPacket {
 
     public IdentifiedKey getPlayerKey() {
       return playerKey;
+    }
+
+    public int getLevel() {
+      return level;
     }
   }
 }

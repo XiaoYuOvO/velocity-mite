@@ -606,4 +606,13 @@ public class MinecraftConnection extends ChannelInboundHandlerAdapter {
   public void setType(ConnectionType connectionType) {
     this.connectionType = connectionType;
   }
+
+  private int rawVersion;
+  public void setRawVersion(int rawVersion) {
+    this.rawVersion = rawVersion;
+  }
+
+  public int getRawVersion() {
+    return rawVersion;
+  }
 }

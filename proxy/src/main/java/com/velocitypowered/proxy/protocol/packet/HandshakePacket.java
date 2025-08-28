@@ -32,6 +32,7 @@ public class HandshakePacket implements MinecraftPacket {
   // While DNS technically allows any character to be used, in practice ASCII is used.
   private static final int MAXIMUM_HOSTNAME_LENGTH = 255 + HANDSHAKE_HOSTNAME_TOKEN.length() + 1;
   private ProtocolVersion protocolVersion;
+  private int rawVersion = 0;
   private String serverAddress = "";
   private int port;
   private HandshakeIntent intent;
@@ -43,6 +44,10 @@ public class HandshakePacket implements MinecraftPacket {
 
   public void setProtocolVersion(ProtocolVersion protocolVersion) {
     this.protocolVersion = protocolVersion;
+  }
+
+  public void setRawVersion(int rawVersion) {
+    this.rawVersion = rawVersion;
   }
 
   public String getServerAddress() {
@@ -87,6 +92,7 @@ public class HandshakePacket implements MinecraftPacket {
   @Override
   public void decode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion ignored) {
     int realProtocolVersion = ProtocolUtils.readVarInt(buf);
+    this.rawVersion = realProtocolVersion;
     this.protocolVersion = ProtocolVersion.getProtocolVersion(realProtocolVersion);
     this.serverAddress = ProtocolUtils.readString(buf, MAXIMUM_HOSTNAME_LENGTH);
     this.port = buf.readUnsignedShort();
@@ -96,7 +102,7 @@ public class HandshakePacket implements MinecraftPacket {
 
   @Override
   public void encode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion ignored) {
-    ProtocolUtils.writeVarInt(buf, this.protocolVersion.getProtocol());
+    ProtocolUtils.writeVarInt(buf, this.protocolVersion.isMITE() ? rawVersion : this.protocolVersion.getProtocol());
     ProtocolUtils.writeString(buf, this.serverAddress);
     buf.writeShort(this.port);
     ProtocolUtils.writeVarInt(buf, this.nextStatus);
@@ -117,5 +123,9 @@ public class HandshakePacket implements MinecraftPacket {
   public int expectedMaxLength(ByteBuf buf, ProtocolUtils.Direction direction,
                                ProtocolVersion version) {
     return 9 + (MAXIMUM_HOSTNAME_LENGTH * 3);
+  }
+
+  public int getRawVersion() {
+    return rawVersion;
   }
 }

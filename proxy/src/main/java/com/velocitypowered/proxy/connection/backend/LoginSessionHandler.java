@@ -18,6 +18,7 @@
 package com.velocitypowered.proxy.connection.backend;
 
 import com.velocitypowered.api.event.player.CookieRequestEvent;
+import com.velocitypowered.api.event.player.ModInfoRequestEvent;
 import com.velocitypowered.api.event.player.ServerLoginPluginMessageEvent;
 import com.velocitypowered.api.event.player.configuration.PlayerEnteredConfigurationEvent;
 import com.velocitypowered.api.network.ProtocolVersion;
@@ -33,19 +34,13 @@ import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
 import com.velocitypowered.proxy.connection.util.ConnectionRequestResults;
 import com.velocitypowered.proxy.connection.util.ConnectionRequestResults.Impl;
 import com.velocitypowered.proxy.protocol.StateRegistry;
-import com.velocitypowered.proxy.protocol.packet.ClientboundCookieRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientboundStoreCookiePacket;
-import com.velocitypowered.proxy.protocol.packet.DisconnectPacket;
-import com.velocitypowered.proxy.protocol.packet.EncryptionRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.LoginAcknowledgedPacket;
-import com.velocitypowered.proxy.protocol.packet.LoginPluginMessagePacket;
-import com.velocitypowered.proxy.protocol.packet.LoginPluginResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.ServerLoginSuccessPacket;
-import com.velocitypowered.proxy.protocol.packet.SetCompressionPacket;
+import com.velocitypowered.proxy.protocol.packet.*;
 import com.velocitypowered.proxy.util.except.QuietRuntimeException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
+
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -132,6 +127,19 @@ public class LoginSessionHandler implements MinecraftSessionHandler {
   public boolean handle(DisconnectPacket packet) {
     resultFuture.complete(ConnectionRequestResults.forDisconnect(packet, serverConn.getServer()));
     serverConn.disconnect();
+    return true;
+  }
+
+
+  @Override
+  public boolean handle(LoginRequestModInfoPacket loginRequestModInfoPacket) {
+    server.getEventManager().fire(new ModInfoRequestEvent(serverConn.getPlayer()))
+            .thenAcceptAsync(
+                    event -> serverConn.ensureConnected()
+                            .write(new LoginModInfoResponsePacket(serverConn.getPlayer()
+                                    .getMiteModInfo()
+                                    .orElse(new HashMap<>()))), serverConn.ensureConnected().eventLoop()
+            );
     return true;
   }
 

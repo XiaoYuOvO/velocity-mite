@@ -18,79 +18,14 @@
 package com.velocitypowered.proxy.protocol;
 
 import static com.google.common.collect.Iterables.getLast;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_12;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_12_1;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_13;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_14;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_15;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16_2;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16_4;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_17;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_18;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_18_2;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_19;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_19_1;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_19_3;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_19_4;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_20_2;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_20_3;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_20_5;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_21;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_21_2;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_21_4;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_21_5;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_21_6;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_7_2;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_8;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_9;
-import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_9_4;
-import static com.velocitypowered.api.network.ProtocolVersion.MINIMUM_VERSION;
-import static com.velocitypowered.api.network.ProtocolVersion.SUPPORTED_VERSIONS;
+import static com.velocitypowered.api.network.ProtocolVersion.*;
 import static com.velocitypowered.proxy.protocol.ProtocolUtils.Direction;
 import static com.velocitypowered.proxy.protocol.ProtocolUtils.Direction.CLIENTBOUND;
 import static com.velocitypowered.proxy.protocol.ProtocolUtils.Direction.SERVERBOUND;
 
 import com.velocitypowered.api.network.ProtocolState;
 import com.velocitypowered.api.network.ProtocolVersion;
-import com.velocitypowered.proxy.protocol.packet.AvailableCommandsPacket;
-import com.velocitypowered.proxy.protocol.packet.BossBarPacket;
-import com.velocitypowered.proxy.protocol.packet.BundleDelimiterPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientSettingsPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientboundCookieRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.ClientboundStoreCookiePacket;
-import com.velocitypowered.proxy.protocol.packet.DialogClearPacket;
-import com.velocitypowered.proxy.protocol.packet.DialogShowPacket;
-import com.velocitypowered.proxy.protocol.packet.DisconnectPacket;
-import com.velocitypowered.proxy.protocol.packet.EncryptionRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.EncryptionResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.HandshakePacket;
-import com.velocitypowered.proxy.protocol.packet.HeaderAndFooterPacket;
-import com.velocitypowered.proxy.protocol.packet.JoinGamePacket;
-import com.velocitypowered.proxy.protocol.packet.KeepAlivePacket;
-import com.velocitypowered.proxy.protocol.packet.LegacyPlayerListItemPacket;
-import com.velocitypowered.proxy.protocol.packet.LoginAcknowledgedPacket;
-import com.velocitypowered.proxy.protocol.packet.LoginPluginMessagePacket;
-import com.velocitypowered.proxy.protocol.packet.LoginPluginResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.PingIdentifyPacket;
-import com.velocitypowered.proxy.protocol.packet.PluginMessagePacket;
-import com.velocitypowered.proxy.protocol.packet.RemovePlayerInfoPacket;
-import com.velocitypowered.proxy.protocol.packet.RemoveResourcePackPacket;
-import com.velocitypowered.proxy.protocol.packet.ResourcePackRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.ResourcePackResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.RespawnPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerDataPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerLoginPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerLoginSuccessPacket;
-import com.velocitypowered.proxy.protocol.packet.ServerboundCookieResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.SetCompressionPacket;
-import com.velocitypowered.proxy.protocol.packet.StatusPingPacket;
-import com.velocitypowered.proxy.protocol.packet.StatusRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.StatusResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.TabCompleteRequestPacket;
-import com.velocitypowered.proxy.protocol.packet.TabCompleteResponsePacket;
-import com.velocitypowered.proxy.protocol.packet.TransferPacket;
-import com.velocitypowered.proxy.protocol.packet.UpsertPlayerInfoPacket;
+import com.velocitypowered.proxy.protocol.packet.*;
 import com.velocitypowered.proxy.protocol.packet.chat.ChatAcknowledgementPacket;
 import com.velocitypowered.proxy.protocol.packet.chat.PlayerChatCompletionPacket;
 import com.velocitypowered.proxy.protocol.packet.chat.SystemChatPacket;
@@ -768,6 +703,10 @@ public enum StateRegistry {
       serverbound.register(
           ServerboundCookieResponsePacket.class, ServerboundCookieResponsePacket::new,
           map(0x04, MINECRAFT_1_20_5, false));
+      serverbound.register(
+              LoginModInfoResponsePacket.class,
+              LoginModInfoResponsePacket::new,
+              map(0x03, MITE1_18_2_BASE, MITE1_18_2_MAX, false));
 
       clientbound.register(
           DisconnectPacket.class, () -> new DisconnectPacket(this),
@@ -785,6 +724,10 @@ public enum StateRegistry {
           LoginPluginMessagePacket.class,
           LoginPluginMessagePacket::new,
           map(0x04, MINECRAFT_1_13, false));
+      clientbound.register(
+              LoginRequestModInfoPacket.class,
+              LoginRequestModInfoPacket::new,
+              map(0x05, MITE1_18_2_BASE, MITE1_18_2_MAX, false));
       clientbound.register(
           ClientboundCookieRequestPacket.class, ClientboundCookieRequestPacket::new,
           map(0x05, MINECRAFT_1_20_5, false));
