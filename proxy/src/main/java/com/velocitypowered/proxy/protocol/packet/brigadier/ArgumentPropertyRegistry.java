@@ -173,8 +173,8 @@ public class ArgumentPropertyRegistry {
           return i;
         }
       }
+      return null;
     }
-    return null;
   }
 
   static {
@@ -287,5 +287,7 @@ public class ArgumentPropertyRegistry {
     register(id("crossstitch:mod_argument", mapSet(MINECRAFT_1_19, -256)), ModArgumentProperty.class, MOD);
 
     empty(id("minecraft:nbt")); // No longer in 1.19+
+    empty(id("minecraft:test_class")); // Fix in fabric
+    empty(id("minecraft:test_argument")); // Fix in fabric
   }
 }
