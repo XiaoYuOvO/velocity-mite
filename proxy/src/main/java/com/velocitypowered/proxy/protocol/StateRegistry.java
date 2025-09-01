@@ -207,7 +207,7 @@ public enum StateRegistry {
           map(0x02, MINECRAFT_1_9, false),
           map(0x03, MINECRAFT_1_12, false),
           map(0x02, MINECRAFT_1_12_1, false),
-          map(0x03, MINECRAFT_1_14, MINECRAFT_1_18_2, false));
+          map(0x03, MINECRAFT_1_14, MITE1_18_2_MAX, false));
       serverbound.register(
           ChatAcknowledgementPacket.class,
           ChatAcknowledgementPacket::new,
@@ -340,7 +340,7 @@ public enum StateRegistry {
           map(0x0E, MINECRAFT_1_13, true),
           map(0x0F, MINECRAFT_1_15, true),
           map(0x0E, MINECRAFT_1_16, true),
-          map(0x0F, MINECRAFT_1_17, MINECRAFT_1_18_2, true));
+          map(0x0F, MINECRAFT_1_17, MITE1_18_2_MAX, true));
       clientbound.register(TabCompleteResponsePacket.class, TabCompleteResponsePacket::new,
           map(0x3A, MINECRAFT_1_7_2, false),
           map(0x0E, MINECRAFT_1_9, false),
@@ -509,7 +509,7 @@ public enum StateRegistry {
           map(0x54, MINECRAFT_1_15, true),
           map(0x53, MINECRAFT_1_16, true),
           map(0x5E, MINECRAFT_1_17, true),
-          map(0x5F, MINECRAFT_1_18, true),
+          map(0x5F, MITE1_18_2_MAX, true),
           map(0x60, MINECRAFT_1_19, true),
           map(0x63, MINECRAFT_1_19_1, true),
           map(0x61, MINECRAFT_1_19_3, true),
@@ -532,7 +532,7 @@ public enum StateRegistry {
           map(0x4F, MINECRAFT_1_16, MINECRAFT_1_16_4, true));
       clientbound.register(TitleSubtitlePacket.class, TitleSubtitlePacket::new,
           map(0x57, MINECRAFT_1_17, true),
-          map(0x58, MINECRAFT_1_18, true),
+          map(0x58, MITE1_18_2_MAX, true),
           map(0x5B, MINECRAFT_1_19_1, true),
           map(0x59, MINECRAFT_1_19_3, true),
           map(0x5D, MINECRAFT_1_19_4, true),
@@ -545,7 +545,7 @@ public enum StateRegistry {
           TitleTextPacket.class,
           TitleTextPacket::new,
           map(0x59, MINECRAFT_1_17, true),
-          map(0x5A, MINECRAFT_1_18, true),
+          map(0x5A, MITE1_18_2_MAX, true),
           map(0x5D, MINECRAFT_1_19_1, true),
           map(0x5B, MINECRAFT_1_19_3, true),
           map(0x5F, MINECRAFT_1_19_4, true),
@@ -571,7 +571,7 @@ public enum StateRegistry {
           TitleTimesPacket.class,
           TitleTimesPacket::new,
           map(0x5A, MINECRAFT_1_17, true),
-          map(0x5B, MINECRAFT_1_18, true),
+          map(0x5B, MITE1_18_2_MAX, true),
           map(0x5E, MINECRAFT_1_19_1, true),
           map(0x5C, MINECRAFT_1_19_3, true),
           map(0x60, MINECRAFT_1_19_4, true),
